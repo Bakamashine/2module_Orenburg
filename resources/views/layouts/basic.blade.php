@@ -36,9 +36,7 @@
                                 form_logout.submit();
                             })
                         </script>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Admin page</a>
-                        </li>
+
                     @endauth
                     <li class="nav-item">
                         <a href="{{route('category.index')}}" class="nav-link">Category</a>

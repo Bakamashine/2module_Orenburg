@@ -6,11 +6,12 @@
 @section('content')
     <form method="post" action="{{route('product.store', ['category' => $category->id])}}"
           enctype="multipart/form-data">
+        @csrf
         <div class="mb-3">
             <label class="form-label">
                 Title
             </label>
-            <input class="form-control @error('title') is-invalid @enderror" name="title">
+            <input class="form-control @error('title') is-invalid @enderror" name="title" value="{{old('title')}}">
             @error('title') <p class="text-danger">{{$message}}</p> @enderror
         </div>
         <div class="mb-3">

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProductRequest extends FormRequest
+class PaymentWebhookRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,8 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|max:20|string',
-            'description' => 'nullable|max:50|string',
-            "price" => 'integer|max:10',
-            'image' => 'nullable|image|mimetypes:image/jpg,image/jpeg|max:2000',
+            'order_id' => "required|integer",
+            'status' => "required|string"
         ];
     }
 }

@@ -32,7 +32,12 @@ class ProductController extends Controller
 
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $product->update($request->only(['title', 'description', 'price']));
+        if ($request->hasFile("image")) {
+            $product->image = $this->imageService->UploadImage($request, 'product');
+        }
+        $product->save();
+        return to_route('product.index', ['category' => $product->category_id]);
     }
 
     public function store(StoreProductRequest $request, Category $category)
@@ -41,13 +46,19 @@ class ProductController extends Controller
             $request->only(['title', 'description', 'price'])
         );
 
-        $product->image = $this->imageService->UploadImage($request);
+        $product->image = $this->imageService->UploadImage($request, "product");
         $product->save();
-
+        return to_route("product.index", compact('category'));
     }
 
     public function create(Category $category)
     {
         return view('product.create', compact('category'));
+    }
+
+    public function destroy(Product $product)
+    {
+        $product->delete();
+        return back();
     }
 }

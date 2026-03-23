@@ -6,5 +6,5 @@ use Illuminate\Http\Request;
 
 interface IImageService
 {
-    public function UploadImage(Request $request, string $key = "image");
+    public function UploadImage(Request $request, string $path, string $key = "image"): ?string;
 }

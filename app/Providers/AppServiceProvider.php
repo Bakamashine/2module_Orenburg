@@ -15,6 +15,13 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(IImageService::class, ImageService::class);
+
+//        $this->renderable(function (ValidationException $exception, $request) {
+//          if (!$request->wantsJson()) {
+//              return null;
+//          }
+//        });
+
     }
 
     /**
