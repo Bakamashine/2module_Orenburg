@@ -17,10 +17,11 @@ class ProductController extends Controller
         return ProductResource::make($product);
     }
 
-    public function buy(Request $request)
+    public function buy(Request $request, Product $product)
     {
         $request->user()->order()->create([
-            'status' => OrderStatus::Waiting
+            'status' => OrderStatus::Waiting,
+            'product_id' => $product->id
         ]);
         return response()->json([
             'pay_url' => "http://localhost:8081/payments"
@@ -37,6 +38,7 @@ class ProductController extends Controller
             $order->status = OrderStatus::Error;
         }
 
+        $order->save();
         return response(status: 204);
 
     }

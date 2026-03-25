@@ -9,8 +9,8 @@ Route::get('/user', function (Request $request) {
 
 Route::controller(\App\Http\Controllers\Api\AuthController::class)
     ->group(function () {
-        Route::post("/login", 'Login');
-        Route::post("/register", 'Register');
+        Route::post("/auth", 'Login');
+        Route::post("/registration", 'Register');
     });
 
 Route::controller(\App\Http\Controllers\Api\CategoryController::class)
@@ -37,3 +37,5 @@ Route::middleware('auth:sanctum')
                 Route::get("/orders", 'getUserOrder');
             });
     });
+
+Route::post('payment-webhook', [\App\Http\Controllers\Api\ProductController::class, 'paymentWebhook']);

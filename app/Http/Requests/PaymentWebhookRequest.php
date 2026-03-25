@@ -24,7 +24,13 @@ class PaymentWebhookRequest extends FormRequest
     {
         return [
             'order_id' => "required|integer",
-            'status' => "required|string"
+            'status' => ['required', function (string $attribute, mixed $value, \Closure $fail) {
+                $allowed_status = ['success', 'failed'];
+                if (in_array($value, $allowed_status)) {
+                    return;
+                }
+                $fail("Status '$value' is not be allowed");
+            }]
         ];
     }
 }

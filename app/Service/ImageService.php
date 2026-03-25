@@ -6,8 +6,42 @@ use App\Contracts\IImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+
+
 class ImageService implements IImageService
 {
+
+    function test(Request $request, string $path, string $key) {
+        if ($request->hasFile($key)) {
+            $image = $request->file($key);
+            $variables = getimagesize($image);
+            [$width, $height] = $variables;
+            $mime_type = $variables['mime'];
+            if ($mime_type == "image/jpeg" || $mime_type == "image/jpg") {
+                $source = imagecreatefromjpeg($image->getRealPath());
+            }
+            $newWidth = 300;
+            $newHeight= 300;
+            ob_start();
+            $resized = imagecreatetruecolor($newWidth, $newHeight);
+            imagecopyresampled($resized, $source, 0,0,0,0,$width, $height, $newWidth, $newHeight);
+            $filename = "mtp-" . uniqid() . ".".$image->extension();
+            $color = imagecolorallocate($resized, 255,255,255,255);
+            imagettftext(
+                $resized,
+                25,
+                0,
+                200,200,
+                $color,
+                public_path(''),
+                "sus",
+            );
+            $binary = ob_get_clean();
+            Storage::disk('public')->put("sus/$filename", $binary);
+        }
+        return null;
+    }
+
     /**
      * @throws \Exception UnsupportedMediaTypeHttpException
      */
@@ -60,6 +94,19 @@ class ImageService implements IImageService
                     0, 0, 0, 0,
                     $newWidth, $newHeight,
                     $width, $height
+                );
+
+                $color = imagecolorallocate($source, 255,255,255);
+                $text = "Shop";
+
+                imagettftext(
+                    $resized,
+                    24,
+                    0,
+                    200,250,
+                    $color,
+                    public_path('fonts/Roboto_Condensed-Bold.ttf'),
+                    $text,
                 );
 
                 ob_start();
