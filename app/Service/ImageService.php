@@ -37,7 +37,11 @@ class ImageService implements IImageService
                 "sus",
             );
             $binary = ob_get_clean();
-            Storage::disk('public')->put("sus/$filename", $binary);
+            $path = "sus/$filename";
+            Storage::disk('public')->put($path, $binary);
+            imagedestroy($source);
+            imagedestroy($resized);
+            return $path;
         }
         return null;
     }
